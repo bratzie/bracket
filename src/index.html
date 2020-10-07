@@ -9,5 +9,14 @@
 </head>
 <body>
   <app-root></app-root>
+  <script src="https://cdn.jsdelivr.net/npm/bubbly-bg@1.0.0/dist/bubbly-bg.js"></script>
+  <script>bubbly({
+      colorStart: '#111',
+      colorStop: '#121319',
+      blur: 1,
+      bubbleFunc:() => `rgba(240, 113, 33, ${Math.random() * 0.1})`,
+      velocityFunc: () => 0.05 + Math.random() * 0.1,
+    });
+  </script>
 </body>
 </html>

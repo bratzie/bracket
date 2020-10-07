@@ -1,1 +1,211 @@
-/* You can add global styles to this file, and also import other style files */
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  --background-color: #121319;
+  --primary-color: #F07121;
+  --accent-color: #0EBAA8;
+
+  --text-color: #e5e2e2;
+  --heading-color: #f5f2f2;
+  --button-text-color: #f5f2f2;
+}
+
+body {
+  margin: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+.container {
+  display: flex;
+  overflow: scroll;
+  padding: 1em 2em;
+}
+
+.heading, .title {
+  color: var(--primary-color);
+  margin: 1em 0;
+}
+
+.tiny {
+  font-size: 0.5em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.match {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1em;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 50%;
+    background-color: var(--accent-color);
+    left: 0;
+  }
+
+  &.leaves::after {
+    height: 100%;
+  }
+
+  &.depth-0::after {
+    display: none;
+  }
+}
+
+.sub-bracket.top > app-match > .match:not(.leaves)::after {
+  bottom: 1.2em;
+}
+
+
+.sub-bracket.bottom > app-match > .match:not(.leaves)::after {
+  top: 1.3em;
+}
+
+.ribbon {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1em 2em;
+}
+
+.button {
+  appearance: none;
+  padding: 0.5em;
+  background-color: transparent;
+  color: var(--primary-color);
+  border: none;
+  font-size: 1.2em;
+  text-transform: uppercase;
+  transition-property: box-shadow, color;
+  transition-timing-function: ease-in-out;
+  transition-duration: 200ms;
+
+  &:not(:last-child) {
+    margin-right: 0.5em;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  &:not(:disabled):focus {
+    cursor: pointer;
+    outline: none;
+    transition-duration: 0ms;
+    color: var(--accent-color);
+    box-shadow: inset 0 -0.1em 0 0 var(--accent-color);
+  }
+
+  &.selected {
+    box-shadow: inset 0 -0.1em 0 0 var(--primary-color);
+  }
+
+  &:not(:disabled):hover {
+    cursor: pointer;
+    outline: none;
+    transition-duration: 0ms;
+    color: var(--accent-color);
+    box-shadow: inset 0 -0.1em 0 0 var(--accent-color);
+  }
+}
+
+.label {
+  font-size: 1em;
+  opacity: 1;
+  margin-bottom: 0.2em;
+}
+.input {
+  padding: 0.5em;
+  font-size: 1.2em;
+  border-radius: 0;
+  border: none;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  box-shadow: 0 0.1em 0 0 var(--primary-color);
+  transition-property: box-shadow, color;
+  transition-timing-function: ease-in-out;
+  transition-duration: 200ms;
+
+  &:not(:last-child) {
+    margin-right: 0.5em;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  &:not(:disabled) {
+    &:hover, &:focus {
+      outline: none;
+      transition-duration: 0ms;
+      color: var(--accent-color);
+      box-shadow: 0 0.1em 0 0 var(--accent-color);
+    }
+  }
+}
+
+.active {
+  cursor: pointer;
+  transition: box-shadow ease-in-out 200ms;
+
+  &:hover, &:focus {
+    outline: none;
+    box-shadow: inset 4px 0 0 0 var(--accent-color);
+  }
+}
+
+
+.selected {
+  box-shadow: inset 2px 0 0 0 var(--primary-color);
+
+  &:focus {
+    box-shadow: inset 4px 0 0 0 var(--primary-color);
+  }
+}
+
+.player {
+  outline: none;
+  padding: 0.5em;
+  min-width: 150px;
+  font-size: 1.2em;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: none;
+  text-align: left;
+}
+
+.winner {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    height: 2px;
+    width: 20px;
+    background-color: var(--accent-color);
+  }
+}
+
+.loser {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.faded {
+  opacity: 0.5;
+}
