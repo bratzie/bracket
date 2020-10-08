@@ -112,6 +112,8 @@ import { BracketService, STATES } from './bracket.service';
     .player-button {
       display: flex;
       align-items: center;
+      opacity: 0;
+      animation: fade-in 1000ms ease-in-out forwards 1;
     }
     .player-button .text {
       margin-right: 0.2em;
