@@ -15,10 +15,15 @@ export class BracketService {
   private STATE = STATES;
   public state = this.STATE.SETUP;
   public name = 'Your Favorite Bracket';
-  public players: string[] = [
-    'Jocke', 'Rickard', 'Rasmus', 'Bratt',
-    'Nikbac', 'Robel', 'Philip', 'Lilk'
-  ];
+  public playerMap = {
+    '1': 'Jocke',
+    '2': 'Nisse',
+    '3': 'Hisse',
+    '4': 'Fisse'
+  };
+  public players: string[] = ['1', '2', '3', '4'];
+  // 'Jocke', 'Rickard', 'Rasmus', 'Bratt',
+  // 'Nikbac', 'Robel', 'Philip', 'Lilk'
   private supportedSizes: number[] = [];
   private maxDepth = 10;
   public gameNameList = [
@@ -44,11 +49,13 @@ export class BracketService {
     }
   }
 
-  public addPlayer(name: string): void {
-    this.players = [...this.players, name];
+  public addPlayer(UUID: string, name: string): void {
+    this.players = [...this.players, UUID];
+    this.playerMap[UUID] = name;
   }
 
-  public removePlayer(id: number): string[] {
+  public removePlayer(UUID: string, id: number): string[] {
+    delete this.playerMap[UUID];
     return this.players.splice(id, 1);
   }
 
@@ -93,6 +100,11 @@ export class BracketService {
 
   public addMatchToHistory(type: string, winner: string, loser: string): void {
     this.playedMatches = [...this.playedMatches, {type, winner, loser}];
-    console.log(this.playedMatches);
+  }
+
+  public getUUID(): string {
+    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+      (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
   }
 }

@@ -18,8 +18,8 @@ import { Match } from '../match';
 
     <ng-template #leafy>
       <div class="match leaves" [ngClass]="'depth-' + depth">
-        <app-player [player]="top" [state]="bs.state" [winner]="roundWinner" [placeholder]="'Forfeit'" (emitWinner)="selectWinner($event, bottom)"></app-player>
-        <app-player [player]="bottom" [state]="bs.state" [winner]="roundWinner" [placeholder]="'Forfeit'" (emitWinner)="selectWinner($event, top)"></app-player>
+        <app-player [player]="top" [state]="bs.state" [winner]="roundWinner" [placeholder]="'Forfeit'" [leaf]="true" (emitWinner)="selectWinner($event, bottom)"></app-player>
+        <app-player [player]="bottom" [state]="bs.state" [winner]="roundWinner" [placeholder]="'Forfeit'" [leaf]="true" (emitWinner)="selectWinner($event, top)"></app-player>
       </div>
     </ng-template>
   `,
@@ -61,7 +61,6 @@ export class MatchComponent implements OnChanges {
 
   public selectWinner(winner: string, loser: string): void {
     if (this.bs.state === this.STATE.RUNNING && winner) {
-      console.log('Played game', this.matchType, 'winner was', winner, 'loser was', loser);
       this.winner.emit(winner);
       this.roundWinner = winner;
       this.bs.addMatchToHistory(this.matchType, winner, loser);
