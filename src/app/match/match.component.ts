@@ -7,19 +7,19 @@ import { Match } from '../match';
   template: `
     <div *ngIf="!leaf; else leafy" class="match" [ngClass]="'depth-' + depth">
       <div class="sub-bracket top">
-        <app-player class="winner" [player]="top.winner" [state]="bs.state" [winner]="roundWinner" [placeholder]="'TBD'" (emitWinner)="selectWinner($event)"></app-player>
+        <app-player class="winner" [player]="top.winner" [state]="bs.state" [winner]="roundWinner" [placeholder]="'TBD'" (emitWinner)="selectWinner($event, bottom.winner)"></app-player>
         <app-match [top]="top.top" [bottom]="top.bottom" [depth]="depth + 1" (winner)="setWinner($event, top)"></app-match>
       </div>
       <div class="sub-bracket bottom" *ngIf="bottom">
-        <app-player class="winner" [player]="bottom.winner" [state]="bs.state" [winner]="roundWinner" [placeholder]="'TBD'" (emitWinner)="selectWinner($event)"></app-player>
+        <app-player class="winner" [player]="bottom.winner" [state]="bs.state" [winner]="roundWinner" [placeholder]="'TBD'" (emitWinner)="selectWinner($event, top.winner)"></app-player>
         <app-match [top]="bottom.top" [bottom]="bottom.bottom" [depth]="depth + 1" (winner)="setWinner($event, bottom)"></app-match>
       </div>
     </div>
 
     <ng-template #leafy>
       <div class="match leaves" [ngClass]="'depth-' + depth">
-        <app-player [player]="top" [state]="bs.state" [winner]="roundWinner" [placeholder]="'Forfeit'" (emitWinner)="selectWinner($event)"></app-player>
-        <app-player [player]="bottom" [state]="bs.state" [winner]="roundWinner" [placeholder]="'Forfeit'" (emitWinner)="selectWinner($event)"></app-player>
+        <app-player [player]="top" [state]="bs.state" [winner]="roundWinner" [placeholder]="'Forfeit'" (emitWinner)="selectWinner($event, bottom)"></app-player>
+        <app-player [player]="bottom" [state]="bs.state" [winner]="roundWinner" [placeholder]="'Forfeit'" (emitWinner)="selectWinner($event, top)"></app-player>
       </div>
     </ng-template>
   `,
@@ -44,6 +44,7 @@ export class MatchComponent implements OnChanges {
   @Input() depth: number;
   @Output() winner = new EventEmitter<string>();
   public roundWinner = '';
+  public matchType = '';
   public STATE = STATES;
   public leaf = false;
 
@@ -55,12 +56,15 @@ export class MatchComponent implements OnChanges {
     if (typeof this.top === 'string') {
       this.leaf = true;
     }
+    this.matchType = this.bs.gameNameList[this.depth];
   }
 
-  public selectWinner(name: string): void {
-    if (this.bs.state === this.STATE.RUNNING && name) {
-      this.winner.emit(name);
-      this.roundWinner = name;
+  public selectWinner(winner: string, loser: string): void {
+    if (this.bs.state === this.STATE.RUNNING && winner) {
+      console.log('Played game', this.matchType, 'winner was', winner, 'loser was', loser);
+      this.winner.emit(winner);
+      this.roundWinner = winner;
+      this.bs.addMatchToHistory(this.matchType, winner, loser);
     }
   }
 

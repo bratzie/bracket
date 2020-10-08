@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Match } from './match';
+import { PlayedMatch } from './played-match';
 
 export enum STATES {
   SETUP,
@@ -20,7 +21,11 @@ export class BracketService {
   ];
   private supportedSizes: number[] = [];
   private maxDepth = 10;
+  public gameNameList = [
+    'Finals', 'Semis', 'Quarters', 'BO16', 'BO32', 'BO64', 'BO128', 'BO256'
+  ]
   public bracket: Match;
+  public playedMatches: PlayedMatch[] = [];
 
   constructor() {
     for (let i = 1; i <= this.maxDepth; i++) {
@@ -84,5 +89,10 @@ export class BracketService {
       }
     })
     return requiredDepth;
+  }
+
+  public addMatchToHistory(type: string, winner: string, loser: string): void {
+    this.playedMatches = [...this.playedMatches, {type, winner, loser}];
+    console.log(this.playedMatches);
   }
 }

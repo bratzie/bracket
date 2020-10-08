@@ -52,7 +52,22 @@ import { BracketService, STATES } from './bracket.service';
         </div>
       </section>
       <section class="start" *ngIf="bs.state !== STATE.SETUP">
-        <app-match class="final" [top]="bs.bracket.top" [bottom]="bs.bracket.bottom" [depth]="0" (winner)="setWinner($event)"></app-match>
+        <div class="history">
+          <div class="played-match" *ngFor="let match of bs.playedMatches">
+            <span class="title">{{match.type}}</span>
+            <span class="winner" *ngIf="match.winner">
+              <span class="key tiny">Winner </span>
+              <span class="value">{{match.winner}}</span>
+            </span>
+            <span class="loser" *ngIf="match.loser">
+              <span class="key tiny">Loser </span>
+              <span class="value">{{match.loser}}</span>
+            </span>
+          </div>
+        </div>
+        <div class="bracket">
+          <app-match class="final" [top]="bs.bracket.top" [bottom]="bs.bracket.bottom" [depth]="0" (winner)="setWinner($event)"></app-match>
+        </div>
       </section>
     </div>
   `,
@@ -111,10 +126,30 @@ import { BracketService, STATES } from './bracket.service';
       text-align: center;
     }
 
-    .final {
+    .start {
       display: flex;
       justify-content: center;
       min-width: 100vw;
+    }
+
+    .history {
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: flex-end;
+    }
+    .played-match {
+      display: flex;
+      flex-direction: column;
+      padding: 1em;
+      border-radius: 0.2em;
+      background-color: var(--background-color);
+      margin-bottom: 0.5em;
+    }
+    .played-match .title {
+      margin: 0;
+    }
+    .played-match > .winner:after {
+      display: none;
     }
 
     .panel .name {
