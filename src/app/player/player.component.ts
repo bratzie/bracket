@@ -19,7 +19,6 @@ import { BracketService, STATES } from '../bracket.service';
           </button>
         </ng-container>
       </div>
-      
     </ng-container>
     <div *ngIf="!player" class="player">
       <span class="faded">{{placeholder}}</span>

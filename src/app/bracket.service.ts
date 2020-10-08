@@ -39,7 +39,12 @@ export class BracketService {
     
     if (this.state === this.STATE.RUNNING) {
       this.generateBracketFromCurrentPlayers();
+      this.resetPlayedMatches();
     }
+  }
+
+  private resetPlayedMatches(): void {
+    this.playedMatches = [];
   }
 
   public setBracketState(state: STATES) {

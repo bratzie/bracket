@@ -52,17 +52,20 @@ import { BracketService, STATES } from './bracket.service';
         </div>
       </section>
       <section class="start" *ngIf="bs.state !== STATE.SETUP">
-        <div class="history">
-          <div class="played-match" *ngFor="let match of bs.playedMatches">
-            <span class="title">{{match.type}}</span>
-            <span class="winner" *ngIf="match.winner">
-              <span class="key tiny">Winner </span>
-              <span class="value">{{bs.playerMap[match.winner]}}</span>
-            </span>
-            <span class="loser" *ngIf="match.loser">
-              <span class="key tiny">Loser </span>
-              <span class="value">{{bs.playerMap[match.loser]}}</span>
-            </span>
+        <div class="history-wrapper">
+          <div class="history">
+            <span class="tiny" *ngIf="bs.playedMatches.length">Latest matches</span>
+            <div class="played-match" *ngFor="let match of bs.playedMatches">
+              <span class="title">{{match.type}}</span>
+              <span class="winner" *ngIf="match.winner">
+                <span class="key tiny">Winner </span>
+                <span class="value">{{bs.playerMap[match.winner]}}</span>
+              </span>
+              <span class="loser" *ngIf="match.loser">
+                <span class="key tiny">Loser </span>
+                <span class="value">{{bs.playerMap[match.loser]}}</span>
+              </span>
+            </div>
           </div>
         </div>
         <div class="bracket">
@@ -72,6 +75,12 @@ import { BracketService, STATES } from './bracket.service';
     </div>
   `,
   styles: [`
+    :host {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
     .setup {
       display: flex;
       flex-direction: column;
@@ -114,6 +123,8 @@ import { BracketService, STATES } from './bracket.service';
       align-items: flex-end;
       background-color: rgba(0, 0, 0, 0.5);
       padding: 2em;
+      opacity: 0;
+      animation: fade-in 1000ms ease-in-out forwards 1;
     }
 
     .panel {
@@ -124,18 +135,36 @@ import { BracketService, STATES } from './bracket.service';
       color: var(--background-color);
       border-radius: 0.2em;
       text-align: center;
+      opacity: 0;
+      animation: fade-in 1000ms ease-in-out forwards 1;
     }
 
     .start {
       display: flex;
-      justify-content: center;
-      min-width: 100vw;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .history-wrapper {
+      width: 100%;
+      overflow: hidden;
+      height: 120px;
     }
 
     .history {
+      height: 120px;
+      overflow: scroll;
+      position: relative;
       display: flex;
-      flex-direction: column-reverse;
+      flex-direction: row-reverse;
       justify-content: flex-end;
+      align-items: center;
+    }
+    .history > .tiny {
+      position: absolute;
+      top: 0.2em;
+      left: 0.5em;
     }
     .played-match {
       display: flex;
@@ -143,13 +172,18 @@ import { BracketService, STATES } from './bracket.service';
       padding: 1em;
       border-radius: 0.2em;
       background-color: var(--background-color);
-      margin-bottom: 0.5em;
+      margin-right: 0.5em;
+      opacity: 0;
+      animation: fade-in 1000ms ease-in-out forwards 1;
     }
     .played-match .title {
       margin: 0;
     }
     .played-match > .winner:after {
       display: none;
+    }
+    .played-match > .winner, .played-match > .loser {
+      white-space: nowrap;
     }
 
     .panel .name {

@@ -28,6 +28,7 @@ body {
   display: flex;
   overflow: scroll;
   padding: 1em 2em;
+  min-width: 100vw;
 }
 
 .heading, .title {
@@ -208,4 +209,15 @@ body {
 
 .faded {
   opacity: 0.5;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
